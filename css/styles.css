@@ -429,7 +429,7 @@ h4 {
 
 @media (min-width: 360px) {
    .weather-muted {
-      font-size: 1rem;
+      font-size: 0.9rem;
    }
 }
 
