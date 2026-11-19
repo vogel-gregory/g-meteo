@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="stylesheet" href="css/bootstrap.min.css" />
+      <link rel="stylesheet" href="css/weather-icons.min.css" />
+      <link rel="stylesheet" href="css/styles.css" />
+      <script src="js/script.js" defer></script>
+      <title>G-Météo – Prévisions météorologiques</title>
+   </head>
+   <body class="d-flex flex-column min-vh-100">
+      <header>
+         <h1>G-Météo</h1>
+         <p>Vos prévisions météo locales sur 7 jours.</p>
+      </header>
+      <main class="container flex-grow-1">
+         <section class="search-section">
+            <h2 class="visually-hidden">Rechercher une ville</h2>
+            <div class="row g-2 justify-content-center">
+               <div class="col-12 col-md-8 col-lg-6">
+                  <div class="form-floating">
+                     <input
+                        type="search"
+                        class="search-input form-control"
+                        id="floatingInput"
+                        placeholder="Rechercher une ville"
+                     />
+                     <label for="floatingInput">Rechercher une ville</label>
+                  </div>
+               </div>
+               <div class="col-12 col-md-auto">
+                  <button type="button" class="search-btn btn w-100">
+                     Rechercher
+                  </button>
+               </div>
+            </div>
+         </section>
+         <div class="messages text-center h3 mt-3" role="status"></div>
+         <section class="weather-layout row g-3">
+            <h2 class="visually-hidden">Prévisions météorologiques</h2>
+            <div class="current-weather col-12 col-lg-6"></div>
+            <div
+               class="weekly-forecast col-12 col-lg-6 d-flex justify-content-evenly"
+            >
+               <div class="weekly-block row row-cols-2 row-cols-sm-3 g-3"></div>
+            </div>
+         </section>
+      </main>
+      <footer class="mt-auto py-3">
+         <p class="text-center">Données fournies par Open-Meteo.com</p>
+      </footer>
+   </body>
+</html>

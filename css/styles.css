@@ -1,0 +1,478 @@
+/* ==================================================
+   GÉNÉRAL
+================================================== */
+
+body {
+   color: #1e293b;
+}
+
+header {
+   text-align: center;
+   padding-block: 0.5rem;
+   box-shadow: 0 4px 15px rgba(31, 38, 135, 0.15);
+}
+
+main {
+   margin-block: 2rem 1rem;
+}
+
+footer {
+   box-shadow: 0 -4px 15px rgba(31, 38, 135, 0.15);
+}
+
+footer p {
+   margin: 0;
+   padding: 0;
+}
+
+/* =====   RECHERCHE MÉTÉO   ===== */
+
+.search-btn {
+   height: calc(100% - 2px);
+   background-color: transparent;
+   border: 2px solid black;
+   color: black;
+   font-weight: 500;
+}
+
+.search-btn:hover {
+   background-color: black;
+   color: white;
+}
+
+.search-input:focus-visible,
+.search-btn:focus-visible {
+   outline: 2px solid red;
+   outline-offset: 3px;
+}
+
+/* ==================================================
+   AMBIANCES MÉTÉOROLOGIQUES DU FOND DE PAGE
+================================================== */
+
+/* Ensoleillé */
+body:has(.current-weather-card.weather--sunny) {
+   background:
+      radial-gradient(ellipse at 15% 20%, #d6eafa 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 75%, #f9e8ce 0%, transparent 55%),
+      linear-gradient(135deg, #edf6fc, #e5eff8);
+}
+
+/* Nuageux */
+body:has(.current-weather-card.weather--cloudy) {
+   background:
+      radial-gradient(ellipse at 15% 20%, #e1e9ef 0%, transparent 70%),
+      radial-gradient(ellipse at 85% 75%, #d6e0e9 0%, transparent 70%),
+      linear-gradient(135deg, #f0f3f6, #e5ebf0);
+}
+
+/* Pluvieux */
+body:has(.current-weather-card.weather--rainy) {
+   background:
+      radial-gradient(ellipse at 15% 20%, #cbdde9 0%, transparent 70%),
+      radial-gradient(ellipse at 85% 75%, #d5e2ec 0%, transparent 70%),
+      linear-gradient(135deg, #e6eef4, #dce7ef);
+}
+
+/* Orageux */
+body:has(.current-weather-card.weather--stormy) {
+   background:
+      radial-gradient(ellipse at 15% 20%, #d9d5e8 0%, transparent 70%),
+      radial-gradient(ellipse at 85% 75%, #c9c9dc 0%, transparent 70%),
+      linear-gradient(135deg, #ebe9f2, #dfdeeb);
+}
+
+/* Neigeux */
+body:has(.current-weather-card.weather--snowy) {
+   background:
+      radial-gradient(ellipse at 15% 20%, #e2f2fa 0%, transparent 70%),
+      radial-gradient(ellipse at 85% 75%, #d4e8f2 0%, transparent 70%),
+      linear-gradient(135deg, #f4f9fc, #e8f2f8);
+}
+
+/* ==================================================
+   ÉLÉMENTS COMMUNS AUX CARTES MÉTÉO
+================================================== */
+
+.current-weather-card,
+.forecast-card {
+   position: relative;
+   overflow: hidden;
+   isolation: isolate;
+
+   border: 1px solid rgba(255, 255, 255, 0.8);
+
+   box-shadow:
+      0 8px 32px rgba(31, 38, 135, 0.12),
+      0 0 15px rgba(255, 255, 255, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.35);
+
+   transition:
+      background 0.3s ease,
+      color 0.3s ease,
+      box-shadow 0.3s ease;
+}
+
+/* Reflet radial */
+.current-weather-card::after,
+.forecast-card::after {
+   content: "";
+   position: absolute;
+   inset: 0;
+   z-index: -1;
+
+   background: radial-gradient(
+      ellipse at 50% 0%,
+      rgba(255, 255, 255, 0.3),
+      transparent 65%
+   );
+
+   pointer-events: none;
+}
+
+/* Reflet diagonal */
+.current-weather-card::before,
+.forecast-card::before {
+   content: "";
+   position: absolute;
+   inset: 0;
+   z-index: -1;
+
+   background: linear-gradient(
+      125deg,
+      rgba(255, 255, 255, 0.75) 0%,
+      rgba(255, 255, 255, 0.3) 15%,
+      rgba(255, 255, 255, 0.08) 35%,
+      transparent 55%,
+      rgba(255, 255, 255, 0.15) 80%,
+      transparent 100%
+   );
+
+   pointer-events: none;
+}
+
+/* ==================================================
+   CARTE MÉTÉO PRINCIPALE
+================================================== */
+
+/* =====   STRUCTURE ET APPARENCE   ===== */
+
+.current-weather-card {
+   --weather-background: #ffffff;
+   --weather-text: #1e293b;
+   --weather-muted: #64748b;
+   --weather-panel: rgba(255, 255, 255, 0.2);
+
+   padding: 1.5rem;
+   border-radius: 1.25rem;
+   color: var(--weather-text);
+
+   background: var(--weather-background);
+   backdrop-filter: blur(28px) saturate(160%);
+   -webkit-backdrop-filter: blur(28px) saturate(160%);
+}
+
+/* =====   THÈMES MÉTÉOROLOGIQUES   ===== */
+
+/* Ensoleillé */
+.current-weather-card.weather--sunny {
+   --weather-background: linear-gradient(
+      135deg,
+      rgba(40, 120, 200, 0.375),
+      rgba(86, 183, 233, 0.3)
+   );
+   --weather-text: #173653;
+   --weather-muted: #355875;
+   --weather-panel: rgba(255, 255, 255, 0.3);
+}
+
+/* Nuageux */
+.current-weather-card.weather--cloudy {
+   --weather-background: linear-gradient(
+      135deg,
+      rgba(99, 119, 140, 0.275),
+      rgba(145, 164, 183, 0.175)
+   );
+   --weather-text: #293b4b;
+   --weather-muted: #4c6173;
+   --weather-panel: rgba(255, 255, 255, 0.3);
+}
+
+/* Pluvieux */
+.current-weather-card.weather--rainy {
+   --weather-background: linear-gradient(
+      135deg,
+      rgba(64, 93, 120, 0.275),
+      rgba(104, 131, 157, 0.175)
+   );
+   --weather-text: #20384d;
+   --weather-muted: #405b72;
+   --weather-panel: rgba(255, 255, 255, 0.3);
+}
+
+/* Orageux */
+.current-weather-card.weather--stormy {
+   --weather-background: linear-gradient(
+      135deg,
+      rgba(69, 64, 82, 0.275),
+      rgba(104, 96, 120, 0.175)
+   );
+   --weather-text: #302c45;
+   --weather-muted: #514b69;
+   --weather-panel: rgba(255, 255, 255, 0.3);
+}
+
+/* Neigeux */
+.current-weather-card.weather--snowy {
+   --weather-background: linear-gradient(
+      135deg,
+      rgba(231, 241, 246, 0.325),
+      rgba(203, 221, 232, 0.255)
+   );
+   --weather-text: #203748;
+   --weather-muted: #536a78;
+   --weather-panel: rgba(255, 255, 255, 0.65);
+}
+
+/* =====   CONTENU MÉTÉO PRINCIPAL   ===== */
+
+h3 {
+   font-size: 1.25rem;
+}
+
+h4 {
+   font-size: 1rem;
+}
+
+.weather-layout {
+   margin-block: 1rem;
+}
+
+.main-weather {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 0.25rem;
+}
+
+.temp-icon {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 1.5rem;
+
+   font-size: 3.5rem;
+   font-weight: 600;
+}
+
+.sky {
+   margin: 0;
+   font-size: 1.25rem;
+   font-weight: 500;
+   text-align: center;
+}
+
+/* =====   DÉTAILS MÉTÉOROLOGIQUES   ===== */
+
+.weather-details {
+   margin-block: 0.5rem;
+}
+
+.weather-detail {
+   height: 100%;
+   padding: 0.75rem;
+
+   background-color: var(--weather-panel);
+   color: var(--weather-text);
+
+   border-radius: 1rem;
+   text-align: center;
+}
+
+.weather-muted {
+   color: var(--weather-muted);
+   font-size: 0.9rem;
+}
+
+/* ==================================================
+   CARTES DES PRÉVISIONS
+================================================== */
+
+/* =====   STRUCTURE ET APPARENCE   ===== */
+
+.forecast-card {
+   --weather-background: #ffffff;
+   --weather-text: #26384a;
+   --weather-muted: #64748b;
+
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: space-between;
+
+   height: 100%;
+   min-height: 140px;
+   padding: 1rem;
+
+   background: var(--weather-background);
+   backdrop-filter: blur(22px) saturate(150%);
+   -webkit-backdrop-filter: blur(22px) saturate(150%);
+   color: var(--weather-text);
+
+   border-radius: 1rem;
+}
+
+.forecast-date {
+   text-align: center;
+}
+
+.forecast-icon {
+   margin-block: 1rem;
+   font-size: 2.5rem;
+}
+
+/* =====   THÈMES MÉTÉOROLOGIQUES   ===== */
+
+/* Ensoleillé */
+.forecast-card.weather--sunny {
+   --weather-background: linear-gradient(
+      135deg,
+      rgba(40, 120, 200, 0.375),
+      rgba(86, 183, 233, 0.3)
+   );
+   --weather-text: #173653;
+   --weather-muted: #355875;
+}
+
+/* Nuageux */
+.forecast-card.weather--cloudy {
+   --weather-background: linear-gradient(
+      135deg,
+      rgba(99, 119, 140, 0.325),
+      rgba(145, 164, 183, 0.225)
+   );
+   --weather-text: #293b4b;
+   --weather-muted: #4c6173;
+}
+
+/* Pluvieux */
+.forecast-card.weather--rainy {
+   --weather-background: linear-gradient(
+      135deg,
+      rgba(64, 93, 120, 0.35),
+      rgba(104, 131, 157, 0.25)
+   );
+   --weather-text: #20384d;
+   --weather-muted: #405b72;
+}
+
+/* Orageux */
+.forecast-card.weather--stormy {
+   --weather-background: linear-gradient(
+      135deg,
+      rgba(69, 64, 82, 0.375),
+      rgba(104, 96, 120, 0.275)
+   );
+   --weather-text: #302c45;
+   --weather-muted: #514b69;
+}
+
+/* Neigeux */
+.forecast-card.weather--snowy {
+   --weather-background: linear-gradient(
+      135deg,
+      rgba(231, 241, 246, 0.375),
+      rgba(203, 221, 232, 0.3)
+   );
+   --weather-text: #203748;
+   --weather-muted: #536a78;
+}
+
+/* ==================================================
+   RÈGLES COMMUNES AUX TEMPÉRATURES
+================================================== */
+
+.temp-icon,
+.temp-icon dd,
+.weather-detail,
+.weather-detail dd,
+.forecast-temperatures,
+.forecast-temperatures dd {
+   margin: 0;
+}
+
+.weather-detail dt,
+.weather-detail p {
+   font-weight: 500;
+}
+
+.forecast-temperatures {
+   display: flex;
+   justify-content: center;
+   width: 100%;
+   min-width: 0;
+   padding-block: 0.5rem;
+   gap: 1rem;
+   font-weight: 600;
+}
+
+.forecast-temperatures > div {
+   flex: 1;
+   min-width: 0;
+   text-align: center;
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media (min-width: 380px) {
+   .weather-muted {
+      font-size: 1rem;
+   }
+}
+
+@media (min-width: 576px) {
+   .weather-muted {
+      font-size: 1.125rem;
+   }
+
+   h2 {
+      font-size: 2rem;
+   }
+
+   h3 {
+      font-size: 1.5rem;
+   }
+
+   h4 {
+      font-size: 1.125rem;
+   }
+}
+
+@media (min-width: 768px) {
+   .weather-muted {
+      font-size: 1.25rem;
+   }
+
+   h2 {
+      font-size: 2.125rem;
+   }
+
+   h4 {
+      font-size: 1.25rem;
+   }
+}
+
+@media (min-width: 992px) {
+   h2 {
+      font-size: 2.25rem;
+   }
+}
+
+@media (min-width: 1200px) {
+   h2 {
+      font-size: 2.5rem;
+   }
+}
