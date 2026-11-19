@@ -427,7 +427,7 @@ h4 {
    RESPONSIVE
 ================================================== */
 
-@media (min-width: 380px) {
+@media (min-width: 360px) {
    .weather-muted {
       font-size: 1rem;
    }
