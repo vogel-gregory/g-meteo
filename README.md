@@ -64,7 +64,6 @@ g-meteo/
 ├── css/
 │   ├── bootstrap.min.css
 │   ├── styles.css
-│   ├── weather-icons.css
 │   └── weather-icons.min.css
 │
 ├── font/
